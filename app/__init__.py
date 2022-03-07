@@ -1,5 +1,5 @@
-from flask import Flask, render_template
+from flask_bootstrap import Bootstrap
+from flask_sqlalchemy import SQLAlchemy
 
-
-## Create Flask Instance
-app = Flask(__name__)
+bootstrap = Bootstrap()
+db = SQLAlchemy()
