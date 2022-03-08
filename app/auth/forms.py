@@ -1,6 +1,9 @@
 from flask_wtf import FlaskForm
+from sqlalchemy import String
 from wtforms import StringField,PasswordField,BooleanField, SubmitField, ValidationError
 from wtforms.validators import Required,Email,EqualTo
+
+from app import email
 from ..models import User
 
 
@@ -24,3 +27,8 @@ def validate_username(self,data_field):
 
 
 
+class LoginForm(FlaskForm):
+    email = StringField('Your Email Address', validators=[Required(), Email()])
+    password = PasswordField('Password', validators=[Required()])
+    remember = BooleanField('Remember me')
+    submit = SubmitField('Login')

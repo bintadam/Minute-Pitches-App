@@ -1,3 +1,4 @@
+from operator import index
 from . import db
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import UserMixin
@@ -25,9 +26,7 @@ class Pitches(db.Model):
     __tablename__ = 'pitches'
 
     id = db.Column(db.Integer,primary_key = True)
-    pitches= db.Column(db.text)
-    movie_title = db.Column(db.String)
-    image_path = db.Column(db.String)
-    movie_review = db.Column(db.String)
+    pitches= db.Column(db.text(), nullableb=False)
+    category_of_pitches = db.Column(db.String(1560) index = True, nullable = False)
     posted = db.Column(db.DateTime,default=datetime.utcnow)
     user_id = db.Column(db.Integer,db.ForeignKey("userss.id"))
