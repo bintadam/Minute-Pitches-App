@@ -1,10 +1,27 @@
+from enum import unique
 from flask import render_template,request,redirect,url_for,abort
+from sqlalchemy import null
+
+from app import email
 from . import main
 from flask_login import login_required
 from ..models import User
 from .forms import UpdateProfile
 from .. import db,photos
-from ..email import mail_message
+from datetime import datetime
+
+
+
+class User(db.Model):
+
+    __tablename__ = 'users'
+
+    id = db.Column(db.Integer,primary_key = True)
+    username = db.Column(db.String(255), unique=True, nullable= False)
+    email = db.Column (db.Strin)
+    pass_secure = db.Column(db.String(255), nullable=False)
+    profile_pic_path = db.Column(db.String())
+    bio =db.Column(db.String(255))
 
 
 
@@ -48,16 +65,3 @@ def update_pic(uname):
     return redirect(url_for('main.profile',uname=uname))
 
 
-@auth.route('/register',methods = ["GET","POST"])
-def register():
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        user = User(email = form.email.data, username = form.username.data,password = form.password.data)
-        db.session.add(user)
-        db.session.commit()
-
-        mail_message("Welcome to watchlist","email/welcome_user",user.email,user=user)
-
-        return redirect(url_for('auth.login'))
-        title = "New Account"
-    return render_template('auth/register.html',registration_form = form)

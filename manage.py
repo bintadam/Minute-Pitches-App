@@ -6,6 +6,8 @@ from app.models import User
 
 
 
+
+
 #create instance manage
 manager = Manager(app)
 manager.add_command('server', Server)
