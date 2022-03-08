@@ -19,3 +19,15 @@ class User(UserMixin,db.Model):
       return f'User {self.username}'
 
 
+
+class Pitches(db.Model):
+
+    __tablename__ = 'pitches'
+
+    id = db.Column(db.Integer,primary_key = True)
+    pitches= db.Column(db.text)
+    movie_title = db.Column(db.String)
+    image_path = db.Column(db.String)
+    movie_review = db.Column(db.String)
+    posted = db.Column(db.DateTime,default=datetime.utcnow)
+    user_id = db.Column(db.Integer,db.ForeignKey("userss.id"))
