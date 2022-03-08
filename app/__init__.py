@@ -17,6 +17,11 @@ photos = UploadSet('photos',IMAGES)
 def create_app(config_name):
     app = Flask(__name__)
 
+
+    # configure UploadSet
+    configure_uploads(app,photos)
+
+
     # Initializing flask extensions
     bootstrap.init_app(app)
     db.init_app(app)
