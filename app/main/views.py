@@ -1,11 +1,10 @@
-from enum import unique
-from flask import render_template,request,redirect,url_for,abort
+from flask import render_template,request,redirect,url_for,abort, flash
 from sqlalchemy import null
 
 from app import email
 from . import main
 from flask_login import login_required
-from ..models import User
+from ..models import User, Pitches
 from .forms import UpdateProfile
 from .. import db,photos
 from datetime import datetime
@@ -49,6 +48,7 @@ def update_profile(uname):
         db.session.commit()
 
         return redirect(url_for('.profile',uname=user.username))
+
     return render_template('profile/update.html',form =form)    
 
 

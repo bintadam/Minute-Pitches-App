@@ -1,4 +1,6 @@
+from enum import unique
 from operator import index
+from unicodedata import category
 from . import db
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import UserMixin
@@ -25,8 +27,11 @@ class Pitches(db.Model):
 
     __tablename__ = 'pitches'
 
-    id = db.Column(db.Integer,primary_key = True)
-    pitches= db.Column(db.text(), nullableb=False)
-    category_of_pitches = db.Column(db.String(1560) index = True, nullable = False)
-    posted = db.Column(db.DateTime,default=datetime.utcnow)
-    user_id = db.Column(db.Integer,db.ForeignKey("userss.id"))
+    id = db.Column(db.Integer, primary_key=True)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    category_of_the_pitch = db.Column(db.String(150), index = True, nullable = False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    comments = db.relationship('Comment', backref='pitch', lazy=True)
+
+    def __repr__(self):
+        return f"Post('{self.title}', '{self.date_posted}')"
