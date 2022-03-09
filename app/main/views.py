@@ -48,37 +48,10 @@ def update_pic(uname):
 
 
 
-@main.route("/post/<int:post_id>/comment", methods=["GET", "POST"])
-@login_required
-def new_pitch(post_id):
-    title = 'minutePitches'
-    new_job= PitchForm()
-    if new_job.validate_on_submit():
-        head = new_job.title.data
-        post = new_job.post.data
-        category = new_job.category.data
-        owner_id = current_user
-
-        new_shaqo = Pitches(user_id= current_user._get_current_object().id, pitch=post, category_of_the_pitch= category)
-        db.session.add(new_shaqo)
-        db.session.commit()
-    
-        return redirect(url_for("main", profile_page))
-    return render_template("newPitch.html", title="title", new_job=new_shaqo)
 
 
 
 
 
-@main.route("/post/<int:post_id>/comment", methods=["GET", "POST"])
-@login_required
-def comment_post(post_id):
-    form = AddCommentForm()
-    if form.validate_on_submit():
-        comment = Comment(body=form.body.data, article=Pitches.id)
-        db.session.add(comment)
-        db.session.commit()
-        flash("Your comment has been added to the post", "success")
-        return redirect(url_for("post", post_id=Pitches.id))
-    return render_template("comment_post.html", title="Comment Post", form=form)
+
 
