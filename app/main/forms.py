@@ -1,6 +1,3 @@
-from pdb import post_mortem
-from turtle import title
-from unicodedata import category
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, TextAreaField, SubmitField,ValidationError
 from wtforms.validators import Required, Email, EqualTo
@@ -16,3 +13,8 @@ class PitchForm(FlaskForm):
     post = TextAreaField ('pitch')
     category = SelectField('Category', choices=[('Work', 'Work')], validators=[Required()])
     submit  = SubmitField('Post')  
+
+
+class AddCommentForm(FlaskForm):
+    comment = TextAreaField('comment', validators=[Required()])
+    submit = SubmitField('Post')    
