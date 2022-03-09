@@ -82,3 +82,25 @@ class PostLike(db.Model):
 
      def __repr__(self):
         return f"Comment('{self.comment}', '{self.user_id}')"      
+
+
+
+class PostDisLike(db.Model):
+     __tablename__ = 'post_like'
+
+     id = db.Column(db.Integer, primary_key=True)
+     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+     post_id = db.Column(db.Integer, db.ForeignKey('pitches.id'))
+
+     def save_postdislike(self):
+         db.session.add(self)
+         db.session.commit()
+
+     
+     @classmethod
+     def fetch_postlike(cls, id):
+        comments = PostDisLike.query.filter_by(post_id=id) .all()    
+
+
+     def __repr__(self):
+        return f"Comment('{self.comment}', '{self.user_id}')"              
