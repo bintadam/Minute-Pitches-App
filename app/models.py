@@ -2,8 +2,11 @@ from enum import unique
 from operator import index
 from unicodedata import category
 from . import db
+
+from sqlalchemy.orm import backref
 from werkzeug.security import generate_password_hash,check_password_hash
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user
+from datetime import datetime, time
 
 
 class User(UserMixin,db.Model):
@@ -31,7 +34,19 @@ class Pitches(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     category_of_the_pitch = db.Column(db.String(150), index = True, nullable = False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    pitch = db.Column (db.text(), nullable= False)
     comments = db.relationship('Comment', backref='pitch', lazy=True)
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
+
+
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    comment = db.Column(db.String(100), nullable=False)
+    user_id = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    post_id = db.Column(db.Integer, db.ForeignKey('pitches.id'), nullable=False)
+
+    def __repr__(self):
+        return f"Comment('{self.comment}', '{self.user_id}')"        
