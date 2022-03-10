@@ -1,10 +1,19 @@
-from flask import render_template,request,redirect,url_for,abort, flash
+from flask import render_template,request,redirect,url_for,abort, 
 
 from . import main
 from flask_login import login_required, current_user
 from ..models import User, Pitches, Comment
 from .forms import UpdateProfile, PitchForm, AddCommentForm
 from .. import db,photos
+
+
+@main.route('/')
+def index():
+    pitches = Pitches.query.all()
+    job = Pitches.query.filter_by(category = 'Job').all() 
+    event = Pitches.query.filter_by(category = 'Events').all()
+    advertisement = Pitches.query.filter_by(category = 'Advertisement').all()
+    return render_template('index.html', job = job,event = event, pitches = pitches,advertisement= advertisement)
 
 
 @main.route('/user/<uname>/update',methods = ['GET','POST'])
