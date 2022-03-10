@@ -9,17 +9,17 @@ from . import auth
 
 @auth.route('/login',methods=['GET','POST'])
 def login():
-    login_form = LoginForm()
-    if login_form.validate_on_submit():
-        user = User.query.filter_by(email = LoginForm.email.data).first()
-        if user is not None and user.verify_password(LoginForm.password.data):
-            login_user(user,LoginForm.remember.data)
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username= form.username.data).first()
+        if user is not None and user.verify_password(form.password.data):
+            login_user(user,form.remember.data)
             return redirect(request.args.get('next') or url_for('main.index'))
 
         flash('Invalid username or Password')
 
     title = "Minutes-Pitches | login"
-    return render_template('auth/login.html',LoginForm = LoginForm,title=title)
+    return render_template('auth/login.html',LoginForm = form,title=title)
 
 
 
@@ -32,8 +32,7 @@ def register():
         mail_message("Welcome to Minute-Pitches","email/welcome_user",user.email,user=user)
         return redirect(url_for('auth.login'))
         title = "New Account"
-    return render_template('auth/register.html',RegistratioForm = form)    
-
+    return render_template('auth/register.html', RegistrationForm = form)    
 
 
 @auth.route('/logout')

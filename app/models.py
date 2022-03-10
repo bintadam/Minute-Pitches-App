@@ -1,52 +1,48 @@
-from enum import unique
-from operator import index
-from unicodedata import category
 from . import db
-from sqlalchemy.orm import backref
 from . import login_manager
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import UserMixin, current_user
-from datetime import datetime, time
+from datetime import datetime
 
 
 class User(UserMixin,db.Model):
-  __tablename__ = 'users'
-
-  id = db.Column(db.Integer,primary_key = True)
-  username = db.Column(db.String(255),index = True)
-  email = db.Column(db.String(255),unique = True,index = True)
-  bio = db.Column(db.String(255))
-  profile_pic_path = db.Column(db.String())
-  password_hash = db.Column(db.String(255))
-  comments = db.relationship('Comment', backref='user', lazy='dynamic')
-  PostLike = db.relationship('PostLike', backref='user', lazy='dynamic')
-  PostDisLike = db.relationship('PostDisLike', backref='user', lazy='dynamic')
-
-  @property
-  def set_password(self):
-      raise AttributeError('You cannot read the password attribute')
-
-  @set_password.setter
-  def password(self, password):
-      self.secure_password = generate_password_hash(password)
+    
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key = True)
+    username = db.Column(db.String(255),unique = True,nullable = False)
+    email  = db.Column(db.String(255),unique = True,nullable = False)
+    secure_password = db.Column(db.String(255),nullable = False)
+    bio = db.Column(db.String(255))
+    profile_pic_path = db.Column(db.String())
+    pitches = db.relationship('Pitches', backref='user', lazy='dynamic')
+    comment = db.relationship('Comment', backref='user', lazy='dynamic')
+    PostLike = db.relationship('PostLike',backref='user',lazy='dynamic')
+    PostDisLike = db.relationship('PostDisLike',backref='user',lazy='dynamic')
 
   
-  def verify_password(self, password):
-      return check_password_hash(self.secure_password,password) 
-  
-  def save_u(self):
-      db.session.add(self)
-      db.session.commit()
+    @property
+    def set_password(self):
+        raise AttributeError('You cannot read the password attribute')
 
-  def delete(self):
-      db.session.delete(self)
-      db.session.commit()
-  
-  def __repr__(self):
-      return f'User {self.username}'
+    @set_password.setter
+    def password(self, password):
+        self.secure_password = generate_password_hash(password)
 
-  def __repr__(self):
-      return f'User {self.username}'
+    def verify_password(self, password):
+        return check_password_hash(self.secure_password,password) 
+    
+    def save_u(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+    
+    def __repr__(self):
+        return f'User {self.username}'
+
+
 
 
 class Pitches(db.Model):
@@ -62,10 +58,6 @@ class Pitches(db.Model):
     PostLike = db.relationship('PostLike', backref='pitches', lazy='dynamic')
     PostDisLike = db.relationship('PostDisLike', backref='pitches', lazy='dynamic')
     
-    @classmethod
-    def fetch_pitches(cls, id):
-        pitches = Pitches.query.filter_by(post_id=id) .desc() .all()
-        return pitches
 
 
     def save_p(self):
@@ -75,7 +67,7 @@ class Pitches(db.Model):
 
     
     def __repr__(self):
-        return f"Post('{self.title}', '{self.date_posted}')"
+        return f"Pitches('{self.post}')"
 
 
 
@@ -92,8 +84,8 @@ class Comment(db.Model):
         db.session.commit()
 
     @classmethod
-    def fetch_comments(cls, id):
-        comments = Comment.query.filter_by(post_id=id) .all()
+    def fetch_comments(cls,id):
+        comments = Comment.query.filter_by(pitches_id=id) .all()
     
     def __repr__(self):
         return f"Comment('{self.comment}', '{self.user_id}')"           
