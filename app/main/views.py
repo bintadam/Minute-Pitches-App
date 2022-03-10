@@ -1,5 +1,5 @@
 from flask import render_template,request,redirect,url_for,abort
-
+from app import app
 from . import main
 from flask_login import login_required, current_user
 from ..models import User, Pitches, Comment
@@ -7,13 +7,13 @@ from .forms import UpdateProfile, PitchForm, AddCommentForm
 from .. import db,photos
 
 
-@main.route('/')
+@app.route('/')
 def index():
     pitches = Pitches.query.all()
-    job = Pitches.query.filter_by(category = 'Job').all() 
-    event = Pitches.query.filter_by(category = 'Events').all()
-    advertisement = Pitches.query.filter_by(category = 'Advertisement').all()
-    return render_template('index.html', job = job,event = event, pitches = pitches,advertisement= advertisement)
+    camal= Pitches.query.filter_by(category = 'Camal').all() 
+    shuqul = Pitches.query.filter_by(category = 'Shuqul').all()
+    xayasin = Pitches.query.filter_by(category = 'Xayasin').all()
+    return render_template('index.html', camal = camal,event = shuqul, pitches = pitches,xayasin= xayasin)
 
 
 @main.route('/user/<uname>/update',methods = ['GET','POST'])
