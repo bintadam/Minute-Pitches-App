@@ -1,10 +1,12 @@
-from xmlrpc.client import Server
+# from xmlrpc.client import Server
 from flask_script import Manager, Server 
 from  flask_migrate import Migrate, MigrateCommand
 from app import create_app,db
 from app.models import User
 
-app = create_app('test')
+app = create_app('development')
+# app = create_app('production')
+# app = create_app('test')
 
 
 
