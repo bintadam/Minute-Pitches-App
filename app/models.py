@@ -66,6 +66,12 @@ class Pitches(db.Model):
         pitches = Pitches.query.filter_by(post_id=id) .desc() .all()
         return pitches
 
+
+    def save_p(self):
+        db.session.add(self)
+        db.session.commit()
+    
+
     
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
