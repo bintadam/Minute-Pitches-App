@@ -25,6 +25,10 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         user = User(email = form.email.data, username = form.username.data,password = form.password.data)
+        user.save_u()
+
+        mail_message("Welcome to Minute-Pitches","email/welcome_user",user.email,user=user)
+ 
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('auth.login'))
