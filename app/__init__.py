@@ -38,6 +38,8 @@ def create_app(config_name):
     login_manager.init_app(app)
     simple.init_app(app)
 
+    from .main import main as app_blueprint
+    app.register_blueprint(app_blueprint)
 
     #register auth Blueprint
     from .auth import auth as auth_blueprint

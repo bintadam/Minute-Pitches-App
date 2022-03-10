@@ -1,5 +1,5 @@
 from flask import render_template,request,redirect,url_for,abort
-from app import app
+from app import main
 from . import main
 from flask_login import login_required, current_user
 from ..models import User, Pitches, Comment
@@ -7,7 +7,7 @@ from .forms import UpdateProfile, PitchForm, AddCommentForm
 from .. import db,photos
 
 
-@app.route('/')
+@main.route('/')
 def index():
     pitches = Pitches.query.all()
     camal= Pitches.query.filter_by(category = 'Camal').all() 

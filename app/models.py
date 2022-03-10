@@ -19,7 +19,7 @@ class User(UserMixin,db.Model):
   profile_pic_path = db.Column(db.String())
   password_hash = db.Column(db.String(255))
   comments = db.relationship('Comment', backref='user', lazy='dynamic')
-  PostLike = db.relationship('Postlike', backref='user', lazy='dynamic')
+  PostLike = db.relationship('PostLike', backref='user', lazy='dynamic')
   PostDisLike = db.relationship('PostDisLike', backref='user', lazy='dynamic')
 
   @property
@@ -54,11 +54,11 @@ class Pitches(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    category_of_the_pitch = db.Column(db.String(150), index = True, nullable = False)
+    category = db.Column(db.String(150), index = True, nullable = False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     post = db.Column(db.Text(), nullable= False)
     comments = db.relationship('Comment', backref='pitches', lazy='dynamic')
-    PostLike = db.relationship('Postlike', backref='pitches', lazy='dynamic')
+    PostLike = db.relationship('PostLike', backref='pitches', lazy='dynamic')
     PostDisLike = db.relationship('PostDisLike', backref='pitches', lazy='dynamic')
     
     @classmethod
