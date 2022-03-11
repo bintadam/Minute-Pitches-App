@@ -92,7 +92,7 @@ class Comment(db.Model):
 
 
 class PostLike(db.Model):
-     __tablename__ = 'post_like'
+     __tablename__ = 'postlike'
 
      id = db.Column(db.Integer, primary_key=True)
      user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
@@ -114,7 +114,7 @@ class PostLike(db.Model):
 
 
 class PostDisLike(db.Model):
-     __tablename__ = 'post_dislike'
+     __tablename__ = 'postdislike'
 
      id = db.Column(db.Integer, primary_key=True)
      user_id = db.Column(db.Integer, db.ForeignKey('users.id'))

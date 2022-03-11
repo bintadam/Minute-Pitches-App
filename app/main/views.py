@@ -1,92 +1,53 @@
-from flask import render_template,request,redirect,url_for,abort
-from app import main
+from flask import render_template, request, redirect, url_for, abort, flash
 from . import main
-from flask_login import login_required, current_user
-from ..models import User, Pitches, Comment
-from .forms import UpdateProfile, PitchForm, AddCommentForm
+from ..models import User, Pitch, Comment, PostLike, PostDisLike
 from .. import db,photos
-
+from flask_login import login_required, current_user
+from .forms import PitchForm, UpdateProfile, CommentForm
 
 @main.route('/')
-def index():
-    pitches = Pitches.query.all()
-    camal= Pitches.query.filter_by(category = 'Camal').all() 
-    shuqul = Pitches.query.filter_by(category = 'Shuqul').all()
-    xayasin = Pitches.query.filter_by(category = 'Xayasin').all()
-    return render_template('index.html', camal = camal,event = shuqul, pitches = pitches,xayasin= xayasin)
+def main_page():
+    '''this is my main page where a user will either login or register to access the site'''
 
+    return redirect(url_for('auth.login'))
 
-@main.route('/user/<uname>/update',methods = ['GET','POST'])
-def profile(uname):
-    user = User.query.filter_by(username = uname).first()
+@main.route('/login')
+def landing_page():
+    title = 'Minute Pitches | Login'
+    return render_template('index.html', title = title)
 
-    if user is None:
-        abort(404)
+@main.route('/profile')
+def profile_page():
+    title = 'Minute-Pitches | Profile'
+    return render_template('profile/profile.html', title = title)
 
-    return render_template("profile/profile.html", user = user)
+@main.route('/Camal')
+def job_page():
+    title = 'Minute-Pitches | Job'
+    pitch = Pitch.query.filter_by(category_of_the_pitch = 'Job').all()
+    return render_template('job.html', title = title, pitch=pitch)
 
-
-@login_required
-def update_profile(uname):
-    user = User.query.filter_by(username = uname).first()
-    if user is None:
-        abort(404)
-
-    form = UpdateProfile()
-
-    if form.validate_on_submit():
-        user.bio = form.bio.data
-
-        db.session.add(user)
-        db.session.commit()
-
-        return redirect(url_for('.profile',uname=user.username))
-
-    return render_template('profile/update.html',form =form)    
-
-
-@login_required
-def update_pic(uname):
-    user = User.query.filter_by(username = uname).first()
-    if 'photo' in request.files:
-        filename = photos.save(request.files['photo'])
-        path = f'photos/{filename}'
-        user.profile_pic_path = path
-        db.session.commit()
-    return redirect(url_for('main.profile',uname=uname))
-
-
-@main.route('/create_new', methods = ['POST','GET'])
+@main.route('/pitch/new', methods = ['GET','POST'])
 @login_required
 def new_pitch():
-    form = PitchForm()
-    if new_amal.validate_on_submit():
-        title = new_amal.title.data
-        post = new_amal.post.data
-        category = new_amal.category.data
-        user_id = current_user
-        new_amal = Pitches(post=post,user_id=current_user._get_current_object().id,category=category,title=title)
-        db.session.add(new_amal)
-        return redirect(url_for('main.index'))
-        
-    return render_template('newPitch.html', form = form)   
+    title = 'Minute Pitches | Create Pitch'
+    job_new = PitchForm()
+    if job_new.validate_on_submit():
+        kichwa = job_new.title.data
+        post = job_new.post.data
+        category = job_new.category.data
+        owner_id = current_user
+        new_job = Pitch(user_id=current_user._get_current_object().id,pitch=post,category_of_the_pitch=category)
+        db.session.add(new_job)
+        db.session.commit()
+        return redirect(url_for('main.profile_page'))
+    return render_template('newPitch.html', title = title,job_new=job_new)
 
-
-
-@main.route('/comment/<int:pitch_id>', methods = ['POST','GET'])
-@login_required
-def comment(pitch_id):
-    form = AddCommentForm()
-    pitch = Pitches.query.get(pitch_id)
-    all_comments = Comment.query.filter_by(pitch_id = pitch_id).all()
-    if form.validate_on_submit():
-        comment = form.comment.data 
-        pitch_id = pitch_id
-        user_id = current_user._get_current_object().id
-        new_comment = Comment(comment = comment,user_id = user_id,pitch_id = pitch_id)
-        new_comment.save_c()
-        return redirect(url_for('.comment', pitch_id = pitch_id))
-    return render_template('comment.html', form =form, pitch = pitch,all_comments=all_comments)     
+@main.route('/advert')
+def advert():
+    title = "Minute Pitches | Advertisement"
+    pitch = Pitch.query.filter_by(category_of_the_pitch = 'Advertisement').all()
+    return render_template("advertisement.html", title= title, pitch=pitch)    
 
 
 

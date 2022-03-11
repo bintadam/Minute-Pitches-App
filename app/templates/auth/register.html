@@ -1,4 +1,8 @@
-{% extends 'base.html'%}
+{% if current_user.is_authenticated %}
+  {% extends 'base.html'%}
+{% else %}
+  {% extends 'auth/auth.html' %}
+{% endif %}
 {% import 'bootstrap/wtf.html' as wtf%}
 
 {% block content %}
@@ -7,10 +11,12 @@
 <div class="col-md-2"> </div>
 <div class="col-md-8">
 
-{{wtf.quick_form(RegistrationForm)}}
+    {{wtf.quick_form(registration_form)}}
 
 </div>
-<div class="col-md-2"></div>
+<div class="col-md-2">
+  <a href="/">Go back</a>
+</div>
 </div>
 </div>
 
