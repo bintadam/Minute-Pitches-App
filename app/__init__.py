@@ -7,43 +7,46 @@ from flask_uploads import UploadSet,configure_uploads,IMAGES
 from flask_mail import Mail
 from flask_simplemde import SimpleMDE
 
-
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'
 login_manager.login_view = 'auth.login'
 
+#Initializing Flask Extensions
 bootstrap = Bootstrap()
 db = SQLAlchemy()
 photos = UploadSet('photos',IMAGES)
 mail = Mail()
 simple = SimpleMDE()
 
-
 def create_app(config_name):
+
     app = Flask(__name__)
 
-    #Creating app configurations
+    # Creating the app configurations
     app.config.from_object(config_options[config_name])
-    #config_options[config_name].init_app(app)
+    config_options[config_name].init_app(app)
 
 
-    # configure UploadSet
+    #configure UploadSet
     configure_uploads(app,photos)
 
 
     # Initializing flask extensions
     bootstrap.init_app(app)
     db.init_app(app)
-    mail.init_app(app)
     login_manager.init_app(app)
+    mail.init_app(app)
     simple.init_app(app)
 
-    from .main import main as app_blueprint
-    app.register_blueprint(app_blueprint)
+    # Registering the main blueprint
+    from .main import main as main_blueprint
+    app.register_blueprint(main_blueprint)
 
-    #register auth Blueprint
+    # Registering the auth blueprint
     from .auth import auth as auth_blueprint
-    app.register_blueprint(auth_blueprint,url_prefix = '/authenticate')
+    app.register_blueprint(auth_blueprint,url_prefix = '/auth')
+
+    # setting config
     
 
     return app
