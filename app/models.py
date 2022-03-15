@@ -1,3 +1,5 @@
+
+  
 from enum import unique
 from operator import index
 
@@ -73,8 +75,8 @@ class Pitch(db.Model):
     time_posted = db.Column(db.DateTime, default = datetime.utcnow)
     category_of_the_pitch = db.Column(db.String(150), index = True, nullable = False)
     comments = db.relationship('Comment',backref='pitch',lazy='dynamic')
-    postlike = db.relationship('PostLike', backref = 'pitch', lazy = 'dynamic')
-    postdislike = db.relationship('PostDislike', backref = 'pitch', lazy = 'dynamic')
+    upvote = db.relationship('Upvote', backref = 'pitch', lazy = 'dynamic')
+    downvote = db.relationship('Downvote', backref = 'pitch', lazy = 'dynamic')
 
 
 
@@ -119,29 +121,29 @@ class Comment(db.Model):
     def __repr__(self):
         return f'comment:{self.comment}'
 
-class PostLike(db.Model):
+class Upvote(db.Model):
 
-    __tablename__ = 'postlike'
+    __tablename__ = 'upvotes'
 
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
     post_id = db.Column(db.Integer,db.ForeignKey('pitches.id'))
 
-    def save_postlike(self):
+    def save_upvotes(self):
         db.session.add(self)
         db.session.commit()
 
     @classmethod
     def fetch_by_post(cls,id):
-        upvote_by_post=PostLike.query.filter_by(post_id=id).all()
+        upvote_by_post=Upvote.query.filter_by(post_id=id).all()
         return upvote_by_post
 
     def __repr__(self) -> str:
-        return f'PostLike{self.user_id}:{self.post_id}'
+        return f'Upvote{self.user_id}:{self.post_id}'
 
-class PostDisLike(db.Model):
+class Downvote(db.Model):
 
-    __tablename__ = 'postdislike'
+    __tablename__ = 'downvotes'
 
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
@@ -152,9 +154,9 @@ class PostDisLike(db.Model):
         db.session.commit()
 
     @classmethod
-    def fetch_postdislike(cls,id):
-        postdislike = PostDisLike.query.filter_by(post_id = id).all()
-        return postdislike
+    def fetch_downvotes(cls,id):
+        downvote = Downvote.query.filter_by(post_id = id).all()
+        return downvote
 
     def __repr__(self) -> str:
         return f'{self.user_id}:{self.post_id}'      

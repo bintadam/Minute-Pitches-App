@@ -48,5 +48,3 @@ def create_app(config_name):
 
     # setting config
     
-
-    return app

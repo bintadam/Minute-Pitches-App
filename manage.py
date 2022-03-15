@@ -5,7 +5,7 @@ from app.models import User
 
 #Create manage instance
 app= create_app('test')
-app = create_app('development')
+app = create_app('production')
 
 #Create manage instance
 manager = Manager(app)
@@ -30,5 +30,5 @@ def make_shell_context():
     return dict(app = app,db = db,User = User)
 
 if __name__ == '__main__':
-    app.config['SECRET_KEY'] = 'zakiya'
+    app.config['SECRET_KEY'] = 'choomba'
     manager.run()

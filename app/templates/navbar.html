@@ -1,14 +1,16 @@
+
+  
 <nav class="navbar navbar-expand-xl navbar-dark bg-dark">
   <div class="container-fluid" id="container">
     <div class="col-10">
       <a class="navbar-brand">
-        <h1>Minute Pitches</h1>
+        <h1>Mathwiti</h1>
       </a>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
           <a class="nav-link active" href="{{url_for('main.profile_page')}}">Home</a>
-          <a class="nav-link" href="{{url_for('main.camal')}}">Camal</a>
-          <a class="nav-link" href="{{url_for('main.xayasin')}}">Xayasin</a>
+          <a class="nav-link" href="{{url_for('main.job_page')}}">Job</a>
+          <a class="nav-link" href="{{url_for('main.advert')}}">Advertisment</a>
           <a class="nav-link" href="{{url_for('main.new_pitch')}}">Add Pitch</a>
 
         </div>
@@ -18,14 +20,14 @@
       <button type="button" class="btn btn-outline-dark me-2">
         <a
           
-          style="color: #ee87a4; text-decoration: none"
+          style="color: #f5245f; text-decoration: none"
           ><i class="bi bi-person-fill"></i>{{current_user.username}}</a
         >
       </button>
       <button type="button" class="btn btn-outline-dark me-2">
         <a
           href="{{url_for('auth.logout')}}"
-          style="text-decoration: none; color: #ee87a4"
+          style="text-decoration: none; color: #f5245f"
           >Logout</a
         >
       </button>
