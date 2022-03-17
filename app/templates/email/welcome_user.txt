@@ -1,3 +1,2 @@
-Hello {{user.username}}
-Welcome to Minutes-Pitches
-We have just seen you have signed up for our application and want to welcome you to the family. Please enjoy the reviews of all your  favourite films.
+Hello {{user.username}} Welcome to Mathwiti Pitches We have just seen you have signed
+up for our application and want to welcome you to the family. Please enjoy!!

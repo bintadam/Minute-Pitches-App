@@ -1,4 +1,7 @@
 * {
-  font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
+body {
+    background-image: url(../photos/troy.jpg);
+}

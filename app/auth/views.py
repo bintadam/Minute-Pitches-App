@@ -18,7 +18,7 @@ def login():
 
         flash('Invalid username or Password')
 
-    title = "Minute-Pitches | login"
+    title = "Mathwiti | login"
     return render_template('auth/login.html',login_form = login_form,title=title)
 
 @auth.route('/register',methods = ["GET","POST"])
@@ -29,7 +29,7 @@ def register():
         db.session.add(user)
         db.session.commit()
 
-        mail_message("Welcome to Minute-Pitches","email/welcome_user",user.email,user=user)
+        mail_message("Welcome to Mathwiti","email/welcome_user",user.email,user=user)
 
         return redirect(url_for('auth.login'))
     title = "Register An Account"
@@ -39,4 +39,10 @@ def register():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for("main.profile_page"))  
+    return redirect(url_for("main.profile_page"))
+
+
+
+
+
+

@@ -1,6 +1,6 @@
 from flask import render_template, request, redirect, url_for, abort, flash
 from . import main
-from ..models import User, Pitch, Comment, PostLike, PostDisLike
+from ..models import User, Pitch, Comment, Upvote, Downvote
 from .. import db,photos
 from flask_login import login_required, current_user
 from .forms import PitchForm, UpdateProfile, CommentForm
@@ -13,24 +13,24 @@ def main_page():
 
 @main.route('/login')
 def landing_page():
-    title = 'Minute Pitches | Login'
+    title = 'Mathwiti | Login'
     return render_template('index.html', title = title)
 
 @main.route('/profile')
 def profile_page():
-    title = 'Minute-Pitches | Profile'
+    title = 'Mathwiti | Profile'
     return render_template('profile/profile.html', title = title)
 
-@main.route('/Camal')
+@main.route('/job')
 def job_page():
-    title = 'Minute-Pitches | Job'
+    title = 'Mathwiti | Job'
     pitch = Pitch.query.filter_by(category_of_the_pitch = 'Job').all()
-    return render_template('job.html', title = title, pitch=pitch)
+    return render_template('job_page.html', title = title, pitch=pitch)
 
 @main.route('/pitch/new', methods = ['GET','POST'])
 @login_required
 def new_pitch():
-    title = 'Minute Pitches | Create Pitch'
+    title = 'Mathwiti | Create Pitch'
     job_new = PitchForm()
     if job_new.validate_on_submit():
         kichwa = job_new.title.data
@@ -45,16 +45,7 @@ def new_pitch():
 
 @main.route('/advert')
 def advert():
-    title = "Minute Pitches | Advertisement"
+    title = "Mathwiti | Advertisements"
     pitch = Pitch.query.filter_by(category_of_the_pitch = 'Advertisement').all()
-    return render_template("advertisement.html", title= title, pitch=pitch)    
-
-
-
-
-
-
-
-
-
+    return render_template("advertisment.html", title= title, pitch=pitch)
 

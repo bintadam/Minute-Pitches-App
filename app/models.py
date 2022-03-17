@@ -1,5 +1,3 @@
-
-  
 from enum import unique
 from operator import index
 
@@ -159,4 +157,11 @@ class Downvote(db.Model):
         return downvote
 
     def __repr__(self) -> str:
-        return f'{self.user_id}:{self.post_id}'      
+        return f'{self.user_id}:{self.post_id}'
+
+
+
+
+
+    
+

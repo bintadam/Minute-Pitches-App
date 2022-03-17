@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block content %}
+<div class="container">
+    <div class="card">
+        {% for x in pitch %}
+        <div class="card-title">{{x.pitch}}</div>
+        <span>Posted at: {{x.time_posted}}</span>
+        {% endfor %}
+    </div>
+    
+</div>
+
+{% endblock %}
